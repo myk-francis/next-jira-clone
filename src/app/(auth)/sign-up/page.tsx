@@ -1,7 +1,9 @@
+"use client";
+import { SignUpCard } from "@/features/auth/components/sign-up-card";
 import React from "react";
 
 const SingInPage = () => {
-  return <div>Sing Up Page</div>;
+  return <SignUpCard />;
 };
 
 export default SingInPage;
