@@ -1,3 +1,4 @@
+"use server";
 import { Account, Client } from "node-appwrite";
 import { AUTH_COOKIE } from "./constants";
 import { cookies } from "next/headers";
@@ -8,7 +9,13 @@ export const getCurrent = async () => {
       .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
       .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT!);
 
-    const session = await cookies().get(AUTH_COOKIE);
+    const session = cookies().get(AUTH_COOKIE);
+
+    if (!session) {
+      return null;
+    }
+
+    client.setSession(session.value);
 
     if (!session) {
       return null;
