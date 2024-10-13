@@ -1,9 +1,5 @@
-// import { Button } from "@/components/ui/button";
-// import { useCurrent } from "@/features/auth/api/use-current";
 import { getCurrent } from "@/features/auth/actions";
-import { UserButton } from "@/features/auth/components/user-button";
 import { redirect } from "next/navigation";
-// import { useRouter } from "next/navigation";
 import React from "react";
 
 export default async function Home() {
@@ -12,9 +8,5 @@ export default async function Home() {
     redirect("/sign-in");
   }
 
-  return (
-    <div>
-      <UserButton />
-    </div>
-  );
+  return <div>Home page.</div>;
 }
