@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { createWorkspaceSchema } from "../schemas";
+import { updateWorkspaceSchema } from "../schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import {
@@ -22,32 +22,38 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { ImageIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { Workspace } from "../types";
 
 interface EditWorkspaceFormProps {
   onCancel?: () => void;
+  initialValues: Workspace;
 }
 
-const EditWorkspaceForm = ({ onCancel }: EditWorkspaceFormProps) => {
+const EditWorkspaceForm = ({
+  onCancel,
+  initialValues,
+}: EditWorkspaceFormProps) => {
   const router = useRouter();
   const { mutate, isPending } = useCreateWorkspace();
 
   const inputRef = React.useRef<HTMLInputElement>(null);
 
-  const form = useForm<z.infer<typeof createWorkspaceSchema>>({
-    resolver: zodResolver(createWorkspaceSchema),
+  const form = useForm<z.infer<typeof updateWorkspaceSchema>>({
+    resolver: zodResolver(updateWorkspaceSchema),
     defaultValues: {
-      name: "",
+      ...initialValues,
+      image: initialValues.imageUrl ?? "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof createWorkspaceSchema>) => {
+  const onSubmit = (values: z.infer<typeof updateWorkspaceSchema>) => {
     const finalValues = {
       ...values,
-      image: values.image instanceof File ? values.image : "",
+      image: values.image instanceof File ? values.image : undefined,
     };
 
     mutate(
-      { form: finalValues },
+      { form: finalValues, param: { workspaceId: initialValues.$id } },
       {
         onSuccess: ({ data }) => {
           form.reset();
@@ -69,7 +75,7 @@ const EditWorkspaceForm = ({ onCancel }: EditWorkspaceFormProps) => {
     <Card className="w-full h-full border-none shadow-none">
       <CardHeader className="flex p-7">
         <CardTitle className="text-xl font-bold">
-          Create a new Workspace
+          {initialValues.name}
         </CardTitle>
       </CardHeader>
       <div className="px-7">
