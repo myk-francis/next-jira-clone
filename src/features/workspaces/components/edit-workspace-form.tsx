@@ -23,11 +23,11 @@ import { ImageIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 
-interface CreateWorkspaceFormProps {
+interface EditWorkspaceFormProps {
   onCancel?: () => void;
 }
 
-const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
+const EditWorkspaceForm = ({ onCancel }: EditWorkspaceFormProps) => {
   const router = useRouter();
   const { mutate, isPending } = useCreateWorkspace();
 
@@ -175,4 +175,4 @@ const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
   );
 };
 
-export default CreateWorkspaceForm;
+export default EditWorkspaceForm;
