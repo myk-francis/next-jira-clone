@@ -209,7 +209,7 @@ const app = new Hono()
         return c.json({ error: "Already a member" }, 400);
       }
 
-      const workspace = await databases.updateDocument<Workspace>(
+      const workspace = await databases.getDocument<Workspace>(
         DATABASE_ID,
         WORKSPACES_ID,
         workspaceId
