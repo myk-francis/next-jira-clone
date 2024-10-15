@@ -1,4 +1,5 @@
 import { getCurrent } from "@/features/auth/queries";
+import { MembersList } from "@/features/workspaces/components/members-list";
 import { redirect } from "next/navigation";
 import React from "react";
 
@@ -8,7 +9,11 @@ const WorkspaceIdMembersPage = async () => {
     redirect("/sign-in");
   }
 
-  return <div>WorkspaceIdMembersPage</div>;
+  return (
+    <div className="w-full lg:max-w-xl">
+      <MembersList />
+    </div>
+  );
 };
 
 export default WorkspaceIdMembersPage;
