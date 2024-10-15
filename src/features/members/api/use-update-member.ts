@@ -11,7 +11,7 @@ type RequestType = InferRequestType<
   (typeof client.api.members)[":memberId"]["$patch"]
 >;
 
-export const useDeleteMember = () => {
+export const useUpdateMember = () => {
   const queryClient = useQueryClient();
   const mutation = useMutation<ResponseType, Error, RequestType>({
     mutationFn: async ({ json, param }) => {
