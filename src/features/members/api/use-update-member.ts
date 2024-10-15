@@ -4,33 +4,34 @@ import { client } from "@/lib/rpc";
 import { toast } from "sonner";
 
 type ResponseType = InferResponseType<
-  (typeof client.api.members)[":memberId"]["$delete"],
+  (typeof client.api.members)[":memberId"]["$patch"],
   200
 >;
 type RequestType = InferRequestType<
-  (typeof client.api.members)[":memberId"]["$delete"]
+  (typeof client.api.members)[":memberId"]["$patch"]
 >;
 
 export const useDeleteMember = () => {
   const queryClient = useQueryClient();
   const mutation = useMutation<ResponseType, Error, RequestType>({
-    mutationFn: async ({ param }) => {
-      const response = await client.api.members[":memberId"]["$delete"]({
+    mutationFn: async ({ json, param }) => {
+      const response = await client.api.members[":memberId"]["$patch"]({
         param,
+        json,
       });
       if (!response.ok) {
-        throw new Error("Failed to delete member");
+        throw new Error("Failed to update member");
       }
       return await response.json();
     },
     onSuccess: () => {
-      toast.success("Member deleted");
+      toast.success("Member updated");
       queryClient.invalidateQueries({
         queryKey: ["members"],
       });
     },
     onError: () => {
-      toast.error("Failed to delete member");
+      toast.error("Failed to update member");
     },
   });
 
