@@ -60,7 +60,7 @@ const EditWorkspaceForm = ({
     if (!ok) return;
     deleteWorkspace(
       { param: { workspaceId: initialValues.$id } },
-      { onSuccess: () => router.push("/") }
+      { onSuccess: () => (window.location.href = "/") }
     );
   };
 
@@ -240,7 +240,7 @@ const EditWorkspaceForm = ({
               className="mt-6 w-fit ml-auto"
               size={"sm"}
               variant={"destructive"}
-              disabled={isDeletingWorkspace}
+              disabled={isDeletingWorkspace || isPending}
               onClick={() => handleDelete()}
             >
               Delete Workspace
