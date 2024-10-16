@@ -39,13 +39,14 @@ export const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
     resolver: zodResolver(createProjectSchema),
     defaultValues: {
       name: "",
+      workspaceId: workspaceId,
     },
   });
 
   const onSubmit = (values: z.infer<typeof createProjectSchema>) => {
     const finalValues = {
       ...values,
-      workspaceId: workspaceId,
+
       image: values.image instanceof File ? values.image : "",
     };
 
