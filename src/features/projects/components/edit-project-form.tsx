@@ -58,7 +58,7 @@ const EditProjectForm = ({ onCancel, initialValues }: EditProjectFormProps) => {
     const ok = await confirmDelete();
     if (!ok) return;
     deleteProject(
-      { param: { workspaceId: initialValues.$id } },
+      { param: { workspaceId: initialValues.workspaceId } },
       { onSuccess: () => (window.location.href = "/") }
     );
   };
@@ -99,7 +99,7 @@ const EditProjectForm = ({ onCancel, initialValues }: EditProjectFormProps) => {
             onClick={
               onCancel
                 ? onCancel
-                : () => router.push(`/workspaces/${initialValues.$id}`)
+                : () => router.push(`/workspaces/${initialValues.workspaceId}`)
             }
           >
             <ArrowLeftIcon className="size-4 mr-2" />
