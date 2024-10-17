@@ -25,7 +25,7 @@ import { useConfirm } from "@/hooks/use-confirm";
 import { useUpdateProject } from "../api/use-update-project";
 import { Project } from "../types";
 import { updateProjectSchema } from "../schemas";
-import { useDeleteProject } from "../api/use-delete-workspace";
+import { useDeleteProject } from "../api/use-delete-project";
 
 interface EditProjectFormProps {
   onCancel?: () => void;
@@ -40,7 +40,7 @@ const EditProjectForm = ({ onCancel, initialValues }: EditProjectFormProps) => {
     useDeleteProject();
   const [confirmDelete, DeleteDialog] = useConfirm(
     "Delete Workspace",
-    "Are you sure you want to delete this workspace?",
+    "Are you sure you want to delete this project?",
     "destructive"
   );
 
@@ -58,7 +58,7 @@ const EditProjectForm = ({ onCancel, initialValues }: EditProjectFormProps) => {
     const ok = await confirmDelete();
     if (!ok) return;
     deleteProject(
-      { param: { workspaceId: initialValues.workspaceId } },
+      { param: { projectId: initialValues.$id } },
       { onSuccess: () => (window.location.href = "/") }
     );
   };
