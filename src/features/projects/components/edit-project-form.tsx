@@ -59,7 +59,10 @@ const EditProjectForm = ({ onCancel, initialValues }: EditProjectFormProps) => {
     if (!ok) return;
     deleteProject(
       { param: { projectId: initialValues.$id } },
-      { onSuccess: () => (window.location.href = "/") }
+      {
+        onSuccess: () =>
+          (window.location.href = `/workspaces/${initialValues.$id}`),
+      }
     );
   };
 

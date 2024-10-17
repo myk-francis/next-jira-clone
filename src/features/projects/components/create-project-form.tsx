@@ -18,7 +18,7 @@ import { DottedSeparator } from "@/components/dotted-separator";
 import Image from "next/image";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { ImageIcon } from "lucide-react";
-// import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { createProjectSchema } from "../schemas";
 import { useCreateProject } from "../api/use-create-project";
@@ -29,7 +29,7 @@ interface CreateProjectFormProps {
 }
 
 export const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
-  // const router = useRouter();
+  const router = useRouter();
   const { mutate, isPending } = useCreateProject();
   const workspaceId = useWorkspaceId();
 
@@ -53,10 +53,9 @@ export const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
     mutate(
       { form: finalValues },
       {
-        onSuccess: () => {
+        onSuccess: ({ data }) => {
           form.reset();
-          // router.push(`/workspaces/${data.$id}`);
-          //TODO: redirect to projects screen
+          router.push(`/workspaces/${workspaceId}/projects/${data.$id}`);
         },
       }
     );
