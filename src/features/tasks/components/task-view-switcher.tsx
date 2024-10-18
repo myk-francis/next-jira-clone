@@ -10,6 +10,7 @@ import { useGetTasks } from "../api/use-get-tasks";
 import { useQueryState } from "nuqs";
 import { DataFilters } from "@/components/data-filters";
 import { useTaskFilters } from "../hooks/use-task-filters";
+import { DataTable } from "./data-table";
 
 export const TaskViewSwitcher = () => {
   const [view, setView] = useQueryState("task-view", {
@@ -61,7 +62,7 @@ export const TaskViewSwitcher = () => {
         ) : (
           <>
             <TabsContent value="table" className="mt-0">
-              Data table
+              <DataTable columns={[]} data={[]} />
             </TabsContent>
             <TabsContent value="kanban" className="mt-0">
               Data kanban
