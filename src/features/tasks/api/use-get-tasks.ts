@@ -20,10 +20,25 @@ export const useGetTasks = ({
   dueDate,
 }: useGetTasksProps) => {
   const query = useQuery({
-    queryKey: ["tasks", workspaceId],
+    queryKey: [
+      "tasks",
+      workspaceId,
+      projectId,
+      status,
+      assigneeId,
+      search,
+      dueDate,
+    ],
     queryFn: async () => {
       const response = await client.api.tasks["$get"]({
-        query: { workspaceId },
+        query: {
+          workspaceId,
+          projectId: projectId ?? undefined,
+          status: status ?? undefined,
+          assigneeId: assigneeId ?? undefined,
+          search: search ?? undefined,
+          dueDate: dueDate ?? undefined,
+        },
       });
 
       if (!response.ok) {

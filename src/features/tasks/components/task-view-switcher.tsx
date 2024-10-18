@@ -2,7 +2,7 @@
 import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { PlusIcon } from "lucide-react";
+import { Loader, PlusIcon } from "lucide-react";
 import { DottedSeparator } from "@/components/dotted-separator";
 import { useCreateTaskModal } from "../hooks/use-create-task-modal";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
@@ -45,17 +45,23 @@ export const TaskViewSwitcher = () => {
         <DottedSeparator className="my-4" />
         Data filters
         <DottedSeparator className="my-4" />
-        <>
-          <TabsContent value="table" className="mt-0">
-            Data table
-          </TabsContent>
-          <TabsContent value="kanban" className="mt-0">
-            Data kanban
-          </TabsContent>
-          <TabsContent value="calender" className="mt-0">
-            Data calender
-          </TabsContent>
-        </>
+        {isLoadingTasks ? (
+          <div className="w-full border rounded-lg h-[200px] flex flex-col items-center justify-center">
+            <Loader className="size-5 animate-spin text-muted-foreground" />
+          </div>
+        ) : (
+          <>
+            <TabsContent value="table" className="mt-0">
+              Data table
+            </TabsContent>
+            <TabsContent value="kanban" className="mt-0">
+              Data kanban
+            </TabsContent>
+            <TabsContent value="calender" className="mt-0">
+              Data calender
+            </TabsContent>
+          </>
+        )}
       </div>
     </Tabs>
   );
