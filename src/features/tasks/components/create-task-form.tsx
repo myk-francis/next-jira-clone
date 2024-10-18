@@ -60,7 +60,7 @@ export const CreateTaskForm = ({
       {
         onSuccess: () => {
           form.reset();
-          // router.push(`/workspaces/${workspaceId}/projects/${data.$id}`);
+          onCancel?.();
         },
       }
     );
@@ -190,11 +190,7 @@ export const CreateTaskForm = ({
                       defaultValue={field.value}
                       onValueChange={field.onChange}
                     >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select project" />
-                        </SelectTrigger>
-                      </FormControl>
+                      <FormControl></FormControl>
                       <FormMessage />
                       <SelectContent>
                         {projectOptions.map((project) => (
