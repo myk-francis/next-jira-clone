@@ -190,7 +190,11 @@ export const CreateTaskForm = ({
                       defaultValue={field.value}
                       onValueChange={field.onChange}
                     >
-                      <FormControl></FormControl>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select project" />
+                        </SelectTrigger>
+                      </FormControl>
                       <FormMessage />
                       <SelectContent>
                         {projectOptions.map((project) => (
