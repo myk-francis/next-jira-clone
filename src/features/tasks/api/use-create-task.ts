@@ -23,7 +23,7 @@ export const useCreateTask = () => {
       });
     },
     onError: () => {
-      toast.error("Task to create workspace");
+      toast.error("Failed to create task");
     },
   });
 
