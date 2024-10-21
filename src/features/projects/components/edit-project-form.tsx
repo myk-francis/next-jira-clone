@@ -76,7 +76,7 @@ const EditProjectForm = ({ onCancel, initialValues }: EditProjectFormProps) => {
       { form: finalValues, param: { projectId: initialValues.$id } },
       {
         onSuccess: () => {
-          form.reset();
+          // form.reset();
           // router.push(`/workspaces/${data.$id}`);
         },
       }
