@@ -1,6 +1,7 @@
 import { getCurrent } from "@/features/auth/queries";
 import { redirect } from "next/navigation";
 import React from "react";
+import { TaskIdClient } from "./client";
 
 const TaskIdPage = async () => {
   const user = await getCurrent();
@@ -8,7 +9,7 @@ const TaskIdPage = async () => {
     redirect("/sign-in");
   }
 
-  return <div>TaskIdPage</div>;
+  return <TaskIdClient />;
 };
 
 export default TaskIdPage;
