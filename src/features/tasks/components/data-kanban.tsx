@@ -7,6 +7,7 @@ import {
 } from "@hello-pangea/dnd";
 import { KanbanColumnHeader } from "./kanban-column-header";
 import React from "react";
+import { KanbanCard } from "./kanban-card";
 
 const boards: TaskStatus[] = [
   TaskStatus.BACKLOG,
@@ -60,6 +61,33 @@ export const DataKanban = ({ data }: DataKanbanProps) => {
                 board={board}
                 taskCount={tasks[board].length}
               />
+              <Droppable droppableId={board}>
+                {({ droppableProps, innerRef }) => (
+                  <div
+                    {...droppableProps}
+                    ref={innerRef}
+                    className="min-h-[200px] py-1.5"
+                  >
+                    {tasks[board].map((task, index) => (
+                      <Draggable
+                        key={task.$id}
+                        draggableId={task.$id}
+                        index={index}
+                      >
+                        {({ draggableProps, innerRef, dragHandleProps }) => (
+                          <div
+                            {...draggableProps}
+                            {...dragHandleProps}
+                            ref={innerRef}
+                          >
+                            <KanbanCard task={task} />
+                          </div>
+                        )}
+                      </Draggable>
+                    ))}
+                  </div>
+                )}
+              </Droppable>
             </div>
           );
         })}
