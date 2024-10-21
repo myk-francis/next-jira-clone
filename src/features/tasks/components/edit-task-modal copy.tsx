@@ -1,15 +1,15 @@
 "use client";
 import React from "react";
-import { useCreateTaskModal } from "../hooks/use-create-task-modal";
 import ResposnsiveModal from "@/components/responsive-modal";
-import { CreateTaskFormWrapper } from "./create-task-form-wrapper";
+import { useUpdateTaskModal } from "../hooks/use-update-task-modal";
+import { EditTaskFormWrapper } from "./edit-task-form-wrapper";
 
-export const CreateTaskModal = () => {
-  const { isOpen, setIsOpen, close } = useCreateTaskModal();
+export const EditTaskModal = () => {
+  const { taskId, close } = useUpdateTaskModal();
 
   return (
-    <ResposnsiveModal open={isOpen} onOpenChange={setIsOpen}>
-      <CreateTaskFormWrapper onCancel={close} />
+    <ResposnsiveModal open={!!taskId} onOpenChange={close}>
+      {taskId && <EditTaskFormWrapper id={taskId} onCancel={close} />}
     </ResposnsiveModal>
   );
 };
