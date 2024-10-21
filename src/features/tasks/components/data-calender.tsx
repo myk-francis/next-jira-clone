@@ -13,6 +13,7 @@ import React from "react";
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "./data-calendar.css";
+import { EventCard } from "./event-card";
 
 const locales = {
   "en-Us": enUS,
@@ -39,7 +40,7 @@ export const DataCalendar = ({ data }: DataCalendarProps) => {
     start: new Date(task.dueDate),
     end: new Date(task.dueDate),
     title: task.name,
-    project: task.projectId,
+    project: task.project,
     asssignee: task.assignee,
     status: task.status,
     id: task.$id,
@@ -69,6 +70,17 @@ export const DataCalendar = ({ data }: DataCalendarProps) => {
       formats={{
         weekdayFormat: (date, culture, localizer) =>
           localizer?.format(date, "EEE", culture) ?? "",
+      }}
+      components={{
+        eventWrapper: ({ event }) => (
+          <EventCard
+            id={event.id}
+            title={event.title}
+            assignee={event.asssignee}
+            project={event.project}
+            status={event.status}
+          />
+        ),
       }}
     />
   );
