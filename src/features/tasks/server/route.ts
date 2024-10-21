@@ -112,6 +112,57 @@ const app = new Hono()
       return c.json({ data: { ...tasks, documents: populatedTasks } });
     }
   )
+  .get(
+    "/:taskId",
+    sessionMiddleware,
+
+    async (c) => {
+      const { users } = await createAdminClient();
+      const databases = c.get("databases");
+      const curentUser = c.get("user");
+      const { taskId } = c.req.param();
+
+      const task = await databases.getDocument<Task>(
+        DATABASE_ID,
+        TASKS_ID,
+        taskId
+      );
+
+      const currentMember = await getMember({
+        databases,
+        workspaceId: task.workspaceId,
+        userId: curentUser.$id,
+      });
+
+      if (!currentMember) {
+        return c.json({ error: "Unauthorized" }, 401);
+      }
+
+      const project = await databases.getDocument<Project>(
+        DATABASE_ID,
+        PROJECTS_ID,
+        task.projectId
+      );
+
+      const member = await databases.getDocument(
+        DATABASE_ID,
+        MEMBERS_ID,
+        task.assigneeId
+      );
+
+      const user = await users.get(member.userId);
+
+      const assignee = {
+        ...member,
+        name: user.name,
+        email: user.email,
+      };
+
+      const populatedTasks = { ...task, project, assignee };
+
+      return c.json({ data: populatedTasks });
+    }
+  )
   .post(
     "/",
     zValidator("json", createTaskSchema),
