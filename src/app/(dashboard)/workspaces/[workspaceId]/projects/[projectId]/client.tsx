@@ -1,5 +1,8 @@
 "use client";
+import PageError from "@/components/page-error";
+import { PageLoader } from "@/components/page-loader";
 import { Button } from "@/components/ui/button";
+import { useGetProject } from "@/features/projects/api/use-get-project";
 import { ProjectAvatar } from "@/features/projects/components/project-avatar";
 import { useProjectId } from "@/features/projects/hooks/use-project-id";
 import { TaskViewSwitcher } from "@/features/tasks/components/task-view-switcher";
@@ -10,6 +13,17 @@ import React from "react";
 
 const ProjectIdClient = () => {
   const projectId = useProjectId();
+
+  const { data: initialValues, isLoading } = useGetProject({ projectId });
+
+  if (isLoading) {
+    return <PageLoader />;
+  }
+
+  if (!initialValues) {
+    return <PageError message="Project not found" />;
+  }
+
   return (
     <div className="flex flex-col gap-y-4">
       <div className="flex items-center justify-between">
