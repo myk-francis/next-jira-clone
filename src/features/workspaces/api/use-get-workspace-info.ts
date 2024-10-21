@@ -9,7 +9,7 @@ export const useGetWorkspaceInfo = ({
   workspaceId,
 }: useGetWorkspaceInfoProps) => {
   const query = useQuery({
-    queryKey: ["workspace"],
+    queryKey: ["workspace-info", workspaceId],
     queryFn: async () => {
       const response = await client.api.workspaces[":workspaceId"]["info"][
         "$get"
