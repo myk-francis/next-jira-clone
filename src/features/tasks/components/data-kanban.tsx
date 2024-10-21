@@ -3,7 +3,7 @@ import {
   DragDropContext,
   Droppable,
   Draggable,
-  DropResult,
+  type DropResult,
 } from "@hello-pangea/dnd";
 import { KanbanColumnHeader } from "./kanban-column-header";
 import React from "react";
@@ -48,6 +48,88 @@ export const DataKanban = ({ data }: DataKanbanProps) => {
     return initialTasks;
   });
 
+  const onDragEnd = React.useCallback((result: DropResult) => {
+    if (!result.destination) return;
+
+    const { source, destination } = result;
+    const sourceStatus = source.droppableId as TaskStatus;
+    const destinationStatus = destination.droppableId as TaskStatus;
+
+    let updatesPayload: {
+      $id: string;
+      status: TaskStatus;
+      position: number;
+    }[] = [];
+
+    setTasks((prevTasks) => {
+      const newTasks = { ...prevTasks };
+      //Safely remove the task from the source column
+      const sourceColumn = [...newTasks[sourceStatus]];
+      const [movedTask] = sourceColumn.splice(source.index, 1);
+
+      //If there is no moved task
+      if (!movedTask) {
+        console.error("No moved task");
+        return prevTasks;
+      }
+
+      //Create new task object with updated status
+      const updatedMovedTask =
+        sourceStatus !== destinationStatus
+          ? { ...movedTask, status: destinationStatus }
+          : movedTask;
+
+      //Update the source column
+      newTasks[sourceStatus] = sourceColumn;
+      //Add the task to the destination column
+      const destColumn = [...newTasks[destinationStatus]];
+      destColumn.splice(destination.index, 0, updatedMovedTask);
+      newTasks[destinationStatus] = destColumn;
+
+      //Prepare minimal update payloads
+      updatesPayload = [];
+
+      //Always update the moved task
+      updatesPayload.push({
+        $id: updatedMovedTask.$id,
+        status: destinationStatus,
+        position: Math.min((destination.index + 1) * 1000, 1_000_000),
+      });
+
+      // Update positions for affected tasks in the destination column
+      newTasks[destinationStatus].forEach((task, index) => {
+        if (task && task.$id !== updatedMovedTask.$id) {
+          const newPostion = Math.min((index + 1) * 1000, 1_000_000);
+          if (task.position !== newPostion) {
+            updatesPayload.push({
+              $id: task.$id,
+              status: destinationStatus,
+              position: newPostion,
+            });
+          }
+        }
+      });
+
+      //If the task moved between columns, update positions in the source column and destination column
+      if (sourceStatus !== destinationStatus) {
+        newTasks[sourceStatus].forEach((task, index) => {
+          if (task) {
+            const newPosition = Math.min((index + 1) * 1000, 1_000_000);
+            if (task.position !== newPosition) {
+              updatesPayload.push({
+                $id: task.$id,
+                status: sourceStatus,
+                position: newPosition,
+              });
+            }
+          }
+        });
+      }
+
+      return newTasks;
+    });
+  }, []);
+
   return (
     <DragDropContext onDragEnd={() => {}}>
       <div className="flex overflow-x-auto">
@@ -62,7 +144,7 @@ export const DataKanban = ({ data }: DataKanbanProps) => {
                 taskCount={tasks[board].length}
               />
               <Droppable droppableId={board}>
-                {({ droppableProps, innerRef }) => (
+                {({ droppableProps, innerRef, placeholder }) => (
                   <div
                     {...droppableProps}
                     ref={innerRef}
@@ -85,6 +167,7 @@ export const DataKanban = ({ data }: DataKanbanProps) => {
                         )}
                       </Draggable>
                     ))}
+                    {placeholder}
                   </div>
                 )}
               </Droppable>
