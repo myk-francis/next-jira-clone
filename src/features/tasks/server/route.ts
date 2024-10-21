@@ -181,15 +181,8 @@ const app = new Hono()
     async (c) => {
       const databases = c.get("databases");
       const user = c.get("user");
-      const {
-        name,
-        status,
-        workspaceId,
-        projectId,
-        dueDate,
-        assigneeId,
-        description,
-      } = c.req.valid("json");
+      const { name, status, projectId, dueDate, assigneeId, description } =
+        c.req.valid("json");
 
       const { taskId } = c.req.param();
 
