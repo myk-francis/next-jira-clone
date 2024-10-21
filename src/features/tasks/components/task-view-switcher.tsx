@@ -14,6 +14,7 @@ import { DataTable } from "./data-table";
 import { columns } from "./columns";
 import { DataKanban } from "./data-kanban";
 import { TaskStatus } from "../types";
+import { useBulkUpdateTask } from "../api/use-bulk-update-tasks";
 
 export const TaskViewSwitcher = () => {
   const [view, setView] = useQueryState("task-view", {
@@ -31,11 +32,13 @@ export const TaskViewSwitcher = () => {
     dueDate,
   });
 
+  const { mutate: bulkUpdate } = useBulkUpdateTask();
+
   const onKanbanChange = React.useCallback(
     (tasks: { $id: string; status: TaskStatus; position: number }[]) => {
-      console.log("📒", { tasks });
+      bulkUpdate({ json: { tasks } });
     },
-    []
+    [bulkUpdate]
   );
 
   const { open } = useCreateTaskModal();
