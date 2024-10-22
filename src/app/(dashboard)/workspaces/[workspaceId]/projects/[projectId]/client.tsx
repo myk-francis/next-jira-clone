@@ -1,4 +1,5 @@
 "use client";
+import { Analytics } from "@/components/analytics";
 import PageError from "@/components/page-error";
 import { PageLoader } from "@/components/page-loader";
 import { Button } from "@/components/ui/button";
@@ -53,7 +54,7 @@ const ProjectIdClient = () => {
           </Button>
         </div>
       </div>
-      <Analytics data={analytics} />
+      {analytics ? <Analytics data={analytics} /> : null}
       <TaskViewSwitcher hideProjectFilters />
     </div>
   );
