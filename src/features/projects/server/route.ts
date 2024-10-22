@@ -368,16 +368,6 @@ const app = new Hono()
         completedTaskDifference,
         overdueTaskCount,
         overdueTaskDifference,
-        // thisMonthTasks,
-        // lastMonthTasks,
-        // thisMonthAssignedTasks,
-        // lastMonthAssignedTasks,
-        // thisMonthIncompleteTasks,
-        // lastMonthIncompleteTasks,
-        // thisMonthCompletedTasks,
-        // lastMonthCompletedTasks,
-        // thisMonthOverdueTasks,
-        // lastMonthOverdueTasks,
       },
     });
   });
