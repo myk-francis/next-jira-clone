@@ -11,7 +11,7 @@ export type ProjectAnalyticsResponseType = InferResponseType<
   200
 >;
 
-export const useGetProjectAnalytics = ({
+export const useGetWorkspaceAnalytics = ({
   workspaceId,
 }: useGetWorkspaceAnalyticsProps) => {
   const query = useQuery({
